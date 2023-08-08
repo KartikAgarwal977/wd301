@@ -1,6 +1,5 @@
 import './TaskCard.css'
 const TaskCard = (props) => {
-  const date = props.completedAtDate
   return (
     <div className='TaskItem'>
         <h2 className='text-xl font-bold'>{props.title} </h2>
@@ -9,5 +8,4 @@ const TaskCard = (props) => {
       </div>
     )
 }
-
 export default TaskCard
