@@ -4,20 +4,20 @@ import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 interface TaskAppProp {}
 interface TaskAppState {
-  tasks: TaskItem[];
-}
+    tasks: TaskItem[];
+    }
 class TaskApp extends React.Component<TaskAppProp, TaskAppState> {
     addTask = (task: TaskItem) => {
         this.setState((state) => {
           return {
-            tasks: [...state.tasks, task],
+              tasks: [...state.tasks, task],
           };
         });
       };
   constructor(props: TaskAppProp) {
     super(props);
     this.state = {
-      tasks: [],
+        tasks: [] 
     };
   }
 
