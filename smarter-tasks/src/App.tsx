@@ -1,5 +1,5 @@
-import './App.css'
-import TaskApp from './TaskApp';
+import "./App.css";
+import TaskApp from "./TaskApp";
 function App() {
   return (
     <div className="App">
@@ -8,4 +8,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

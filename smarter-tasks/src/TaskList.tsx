@@ -32,15 +32,24 @@ import Task from "./Task";
 import { TaskItem } from "./types";
 interface Props {
   tasks: TaskItem[];
+  deleteValue: (id: number) => void;
 }
 
 interface State {}
 class TaskList extends React.Component<Props, State> {
-  
   render() {
-    return this.props.tasks.map((task, idx) => (
-      <Task key={idx} title={task.title} description={task.description} dueDate={task.dueDate} />
-    ));
+    return this.props.tasks
+      .filter((task) => task !== null)
+      .map((task, idx) => (
+        <Task
+          key={idx}
+          id={task.id}
+          title={task.title}
+          description={task.description}
+          dueDate={task.dueDate}
+          deleteValue={this.props.deleteValue}
+        />
+      ));
   }
 }
 export default TaskList;
