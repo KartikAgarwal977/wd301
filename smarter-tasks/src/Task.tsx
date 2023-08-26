@@ -16,13 +16,14 @@ const Task = (props: Taskprop) => {
         </p>
         <button
           id="deleteTaskButton"
+          className="deleteTaskButton"
           onClick={() => props.deleteValue(props.id)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 deleteTaskButton"
           >
             <path
               // fill-rule="evenodd"
