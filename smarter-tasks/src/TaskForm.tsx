@@ -4,10 +4,10 @@ import "./TaskCard.css";
 
 interface TaskFormProps {
   addTask: (task: TaskItem) => void;
-  generateId: () => number;
+  generateId: () => string;
 }
 interface TaskFormState {
-  id: number;
+  id: string;
   title: string;
   description: string;
   dueDate: string;
@@ -31,7 +31,7 @@ const TaskForm = (Props: TaskFormProps) => {
         Props.addTask(formState);
       } else alert("Please enter a valid date");
     } else alert("Title never be Empty");
-    setFormState({ id: 0, title: "", description: "", dueDate: "" });
+    setFormState({ id: formState.id, title: "", description: "", dueDate: "" });
   };
   const descriptionChanged: React.ChangeEventHandler<HTMLInputElement> = (
     event

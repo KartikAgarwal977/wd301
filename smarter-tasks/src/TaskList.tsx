@@ -32,7 +32,7 @@ import Task from "./Task";
 import { TaskItem } from "./types";
 interface Props {
   tasks: TaskItem[];
-  deleteValue: (id: number) => void;
+  deleteValue: (id: string) => void;
 }
 
 interface State {}

@@ -1,9 +1,9 @@
 interface Taskprop {
-  id: number;
+  id: string;
   title: string;
   description: string;
   dueDate: string;
-  deleteValue: (id: number) => void;
+  deleteValue: (id: string) => void;
 }
 const Task = (props: Taskprop) => {
   return (

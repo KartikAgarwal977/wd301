@@ -1,4 +1,5 @@
 // import  {useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { TaskItem } from "./types";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
@@ -18,15 +19,19 @@ const TaskApp = () => {
   );
   // React.useState<TaskAppState>;
   const addTask = (tasks: TaskItem) => {
-    setTaskAppState({ tasks: [...taskAppState.tasks, tasks] });
+    const newTask = {
+      ...tasks,
+      id: uuidv4(),
+    };
+    setTaskAppState({ tasks: [...taskAppState.tasks, newTask] });
   };
-  const deleteTask = (id: number) => {
+  const deleteTask = (id: string) => {
     const newTasks = taskAppState.tasks.filter((task) => task.id !== id);
     setTaskAppState({ tasks: newTasks });
   };
 
   const generateId = () => {
-    return taskAppState.tasks.length;
+    return uuidv4();
   };
   useEffect(() => {
     console.log(taskAppState.tasks.map((task) => task));
