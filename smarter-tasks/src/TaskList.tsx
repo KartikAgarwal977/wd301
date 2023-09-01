@@ -43,7 +43,7 @@ class TaskList extends React.Component<Props, State> {
       .map((task, idx) => (
         <Task
           key={idx}
-          id={task.id}
+          id= {task.id}
           title={task.title}
           description={task.description}
           dueDate={task.dueDate}
