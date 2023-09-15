@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import TaskListPage from "./pages/TaskListPage";
 import TaskDetailsPage from "./pages/TaskDetailsPage";
 // import TaskApp from "./TaskApp";
+import ReactPlayground from "./ReactPlayground";
 import Signin from "./pages/Signin";
 import {
   createBrowserRouter,
@@ -54,7 +55,10 @@ const router = createBrowserRouter([
 ]);
 const App = () => {
   return (
-    <RouterProvider router={router} />
+    <>
+      <ReactPlayground />
+      <RouterProvider router={router} />
+    </>
   )
 }
 // function App() {
