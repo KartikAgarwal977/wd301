@@ -8,10 +8,16 @@ const ReactPlayground = () => {
     const [data, setData] = useState<Post[]>([]);
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json())
-            .then(data => setData(data))
-            .catch(error => console.error(error));
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+                const json = await response.json();
+                setData(json)
+            }
+            catch (error) { console.error("Error", error) }
+            
+        }
+        fetchData()
     }, []);
     console.log(data)
 

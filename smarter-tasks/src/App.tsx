@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import TaskListPage from "./pages/TaskListPage";
 import TaskDetailsPage from "./pages/TaskDetailsPage";
 // import TaskApp from "./TaskApp";
+import Form from "./Form";
 import ReactPlayground from "./ReactPlayground";
 import Signin from "./pages/Signin";
 import {
@@ -13,12 +14,17 @@ import {
 import Layout from "./Layout";
 import ProtectedRoute from "./ProtectedRoute";
 import Notfound from "./pages/Notfound";
+import Signup from "./pages/signup";
 
 // import TaskList from "./TaskList";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/signin" replace />,
+    element: <Signup />,
+  },
+  {
+    path: "/Signup",
+    element: <Signup/>,
   },
   {
     path: "/signin",
@@ -55,10 +61,11 @@ const router = createBrowserRouter([
 ]);
 const App = () => {
   return (
-    <>
-      <ReactPlayground />
+    <div>
+      <Form />
+      {/* <ReactPlayground /> */}
       <RouterProvider router={router} />
-    </>
+    </div>
   )
 }
 // function App() {
