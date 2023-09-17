@@ -12,6 +12,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Layout from "./Layout";
+import Dashboard from "./pages/dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import Notfound from "./pages/Notfound";
 import Signup from "./pages/signup";
@@ -39,25 +40,33 @@ const router = createBrowserRouter([
     element: <Notfound/>,
   },
   {
-    element:(
+    path: "/dashboard",
+    element: (
       <ProtectedRoute>
-        <Layout />
-        </ProtectedRoute>),
-    children: [
-      {
-        path: "/home",
-        element: <HomePage />,
-      },
-      {
-        path: "/tasks",
-        element: <TaskListPage />,
-      },
-      {
-        path: "/tasks/:id",
-        element: <TaskDetailsPage />,
-      },
-    ],
-  },
+        <Dashboard />
+      </ProtectedRoute>
+    )
+  }
+  // {
+  //   element:(
+  //     <ProtectedRoute>
+  //       <Layout />
+  //       </ProtectedRoute>),
+  //   children: [
+  //     {
+  //       path: "/home",
+  //       element: <HomePage />,
+  //     },
+  //     {
+  //       path: "/tasks",
+  //       element: <TaskListPage />,
+  //     },
+  //     {
+  //       path: "/tasks/:id",
+  //       element: <TaskDetailsPage />,
+  //     },
+  //   ],
+  // },
 ]);
 const App = () => {
   return (
