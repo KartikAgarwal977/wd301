@@ -34,7 +34,7 @@ const SigninForm: React.FC = () => {
       // Dialogue: After successful signin, first we will save the token in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("userData", JSON.stringify(data.user));
-      navigate("/dashboard");
+      navigate("/account");
     } catch (error) {
       console.error("Sign-in failed:", error);
     }

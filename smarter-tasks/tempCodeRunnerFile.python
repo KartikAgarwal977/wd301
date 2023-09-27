@@ -1,0 +1,4 @@
+sort_list = Lambda x: x.sort()
+number = [3,1,4,2]
+sort_list(number)
+print(number)
