@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { reducer, initialState, UsersState, UsersActions } from "./reducer"; // Import the updated UsersState and UsersActions.
+import { reducer, initialState, UsersState, UsersActions } from "./reducer"; 
 
 const UsersStateContext = createContext<UsersState | undefined>(undefined);
 type UsersDispatch = React.Dispatch<UsersActions>;
@@ -10,7 +10,7 @@ const UsersDispatchContext = createContext<UsersDispatch | undefined>(
 export const UsersProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState); // Use the users reducer and initial state.
+  const [state, dispatch] = useReducer(reducer, initialState); 
   return (
     <UsersStateContext.Provider value={state}>
       <UsersDispatchContext.Provider value={dispatch}>

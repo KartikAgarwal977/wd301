@@ -60,7 +60,7 @@ export const deleteUser = async (dispatch: any, id: number) => {
 
     }
     catch (err) {
-        console.error('Operation failed:', error);
+        console.error('Operation failed:', err);
         // Dialogue 5: And for error I'll return status called "ok", with value `false`.
         return { ok: false, err }
     }
