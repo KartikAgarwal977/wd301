@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react';
 import { fetchProjects } from "../../context/projects/actions";
-
-// So, let's import the useProjectsDispatch custom hook.
 import { useProjectsDispatch } from "../../context/projects/context";
-
-// I'll import the ProjectListItems component from the same folder. 
-// This I'll define next.
 import ProjectListItems from './ProjectListItems';
 const ProjectList: React.FC = () => {
 
