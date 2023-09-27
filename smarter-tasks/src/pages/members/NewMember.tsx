@@ -76,13 +76,12 @@ const NewMember = () => {
                     Create new Member
                   </Dialog.Title>
                   <div className="mt-2">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      {/* I'll show the error, if it exists.*/}
+                  <form onSubmit={handleSubmit(onSubmit)}>
                       {error && <span>{error}</span>}
                       <input
                         type="text"
                         id="name"
-                        placeholder="Enter name..."
+                        placeholder="Enter name"
                         autoFocus
                         {...register("name", { required: true })}
                         className={`w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue ${
@@ -96,19 +95,19 @@ const NewMember = () => {
                         autoFocus
                         {...register("email", { required: true })}
                         className={`w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue ${
-                          errors.name ? "border-red-500" : ""
+                          errors.email ? "border-red-500" : ""
                         }`}
                       />
                       <input
                         type="password"
                         id="password"
-                        placeholder="Enter Password"
+                        placeholder="Enter password"
+                        autoFocus
                         {...register("password", { required: true })}
                         className={`w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue ${
-                          errors.name ? "border-red-500" : ""
+                          errors.password ? "border-red-500" : ""
                         }`}
                       />
-
                       {errors.name && <span>This field is required</span>}
                       <button
                         type="submit"
