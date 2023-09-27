@@ -20,26 +20,27 @@ export const addUser = async (dispatch: any, args: any) => {
     try {
         const token = localStorage.getItem("authToken") ?? "";
         const response = await fetch(`${API_ENDPOINT}/users`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${token}` },
-            body: JSON.stringify(args),
-        })
+        method: "POST",
+        headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(args),
+        });
         if (!response.ok) {
-            throw new Error('Failed to create project');
+            throw new Error("Failed to create user");
         }
         const data = await response.json();
-        if (data.errors && data.error.length > 0) {
-            return { ok: false, error: data.error[0].message }
+        if (data.errors && data.errors.length > 0) {
+            return { ok: false, error: data.errors[0].message };
         }
-        dispatch({ type: "ADD_USERS_SUCCESS" });
-        return { ok: true }
-    }
-    catch (err) {
-        console.log(`addUser failed with the following errors :${JSON.stringify(err)}`);
-        return { ok: false, err }
+        dispatch({ type: "ADD_USER_SUCCESS", payload: data.user });
+        return { ok: true };
+    } catch (error) {
+        console.error("Operation failed:", error);
+        return { ok: false, error };
     }
 };
-
 export const deleteUser = async (dispatch: any, id: number) => {
     const token = localStorage.getItem('authToken') ?? "";
     try {
@@ -61,7 +62,6 @@ export const deleteUser = async (dispatch: any, id: number) => {
     }
     catch (err) {
         console.error('Operation failed:', err);
-        // Dialogue 5: And for error I'll return status called "ok", with value `false`.
         return { ok: false, err }
     }
 };
