@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useUsersDispatch } from "../../context/members/context";
+import { useMembersDispatch } from "../../context/members/context";
 import { addUser } from "../../context/members/actions";
 type Inputs = {
   name: string;
@@ -13,7 +13,7 @@ const NewMember = () => {
 
   // Next, I'll add a new state to handle errors.
   const [error, setError] = useState(null);
-  const dispatchUsers = useUsersDispatch();
+  const dispatchUsers = useMembersDispatch();
   const {
     register,
     handleSubmit,

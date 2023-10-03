@@ -1,9 +1,9 @@
 import { deleteUser } from "../../context/members/actions";
-import { useUsersDispatch, useUsersState } from "../../context/members/context";
+import { useMembersDispatch, useMembersState } from "../../context/members/context";
 
 export default function MemberListItems() {
-  const state: any = useUsersState();
-  const dispatchMember = useUsersDispatch();
+  const state: any = useMembersState();
+  const dispatchMember = useMembersDispatch();
   const handleDelete = (id: number) => {
     deleteUser(dispatchMember, id);
   };
