@@ -30,8 +30,6 @@ const formatDateForPicker = (isoDate: string) => {
   const year = dateObj.getFullYear();
   const month = String(dateObj.getMonth() + 1).padStart(2, "0");
   const day = String(dateObj.getDate()).padStart(2, "0");
-
-  // Format the date as per the required format for the date picker (YYYY-MM-DD)
   return `${year}-${month}-${day}`;
 };
 
@@ -51,10 +49,7 @@ const TaskDetails = () => {
   )[0];
 
   const selectedTask = taskListState.projectData.tasks[taskID ?? ""];
-  // Use react-form-hook to manage the form. Initialize with data from selectedTask.
   const memberState = useMembersState();
-
-  // Access the comment dispatch and state
   const commentsDispatch = useCommentDispatch();
   const commentsState = useCommentState();
   useEffect(() => {
@@ -115,10 +110,6 @@ const TaskDetails = () => {
   const handleCreateComment = (commentText: string) => {
         const comment = {
           description: commentText,
-          // task_id: parseInt(taskID, 10),
-          // owner: userObject.id, // Replace with the actual user ID or authentication logic
-          // userName: name, // Replace with the actual user's name or authentication logic
-          // timestamp: new Date().toISOString(), // Current timestamp
         };
         console.log(comment);
       if(projectID && taskID)
@@ -257,7 +248,7 @@ const TaskDetails = () => {
                           <p>Error: {commentsState.errorMessage}</p>
                         ) : (
                           <div className="mt-2 space-y-4">
-                            {commentsState.comments.map((comment) => (
+                            {commentsState.comments.reverse().map((comment) => (
                               <div
                                 key={comment.id}
                                 className="comment bg-gray-100 p-3 rounded-lg shadow-md"
