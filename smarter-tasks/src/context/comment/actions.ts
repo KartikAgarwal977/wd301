@@ -1,60 +1,17 @@
 import { Dispatch } from "react";
 import { API_ENDPOINT } from "../../config/constants";
-import {
-  CommentActions,
-  CommentAvailableAction,
-  CommentPayload,
-} from "./types";
+import { CommentAvailableAction, CommentActions } from "./types";
+import { CommentPayload } from "./types";
 
-export const createComment = async (
-    dispatch: Dispatch<CommentActions>,
-    projectID: string,
-    taskID: string,
-    comment: CommentPayload
-    ) => {
-        const token = localStorage.getItem("authToken") ?? "";
-        console.log("hey we are on create comment function")
-        try {
-    dispatch({ type: CommentAvailableAction.CREATE_COMMENT_REQUEST });
-    const response = await fetch(
-      `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type" : "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(comment),
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Failed to update task");
-    }
-    const data = await response.json();
-    dispatch({
-      type: CommentAvailableAction.CREATE_COMMENT_SUCCESS,
-      payload: data,
-    });
-          console.log('done comment created')
-    refreshComments(dispatch, projectID, taskID);
-  } catch (error) {
-    console.error(`Operation failed: `, error);
-    dispatch({
-      type: CommentAvailableAction.CREATE_COMMENT_FAILURE,
-      payload: "Unable to create comment",
-    });
-  }
-};
-
-export const refreshComments = async (
+// Action to fetch comments for a specific task
+// Action to fetch comments for a specific task and sort them in reverse chronological order
+export const fetchComments = async (
   dispatch: Dispatch<CommentActions>,
   projectID: string,
   taskID: string
 ) => {
   const token = localStorage.getItem("authToken") ?? "";
   try {
-    console.log("Refreshing comments for projectID:", projectID);
-  console.log("Task ID:", taskID);
     dispatch({ type: CommentAvailableAction.FETCH_COMMENTS_REQUEST });
     const response = await fetch(
       `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
@@ -64,21 +21,62 @@ export const refreshComments = async (
         },
       }
     );
+
     if (!response.ok) {
-      throw new Error("Failed to fetch");
+      throw new Error("Failed to fetch comments");
     }
-    const Data = await response.json();
-    console.log("API Response:", Data);
+
+    const data = await response.json();
+    console.log(data);
     dispatch({
       type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS,
-      payload: Data,
+      payload: data,
     });
-    return Data
   } catch (error) {
-    console.error(`Operation failed: `, error);
+    console.error("Operation failed:", error);
     dispatch({
       type: CommentAvailableAction.FETCH_COMMENTS_FAILURE,
-      payload: "Unable to  Fetch Comment",
+      payload: "Unable to load comments",
+    });
+  }
+};
+
+// Action to create a new comment for a specific task
+export const createComment = async (
+  dispatch: Dispatch<CommentActions>,
+  projectID: string,
+  taskID: string,
+  comment: CommentPayload
+) => {
+  const token = localStorage.getItem("authToken") ?? "";
+  try {
+    dispatch({ type: CommentAvailableAction.CREATE_COMMENT_REQUEST });
+    const response = await fetch(
+      `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(comment),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to create comment");
+    }
+    const data2 = await response.json();
+    
+    dispatch({ type: CommentAvailableAction.CREATE_COMMENT_SUCCESS, payload: data2 });
+    // You may choose to refresh comments after creating a new one
+    console.log("comment created");
+    fetchComments(dispatch, projectID, taskID);
+  } catch (error) {
+    console.error("Operation failed:", error);
+    dispatch({
+      type: CommentAvailableAction.CREATE_COMMENT_FAILURE,
+      payload: "Unable to create comment",
     });
   }
 };
