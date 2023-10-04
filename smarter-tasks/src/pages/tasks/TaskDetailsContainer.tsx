@@ -11,7 +11,7 @@ const TaskDetailsContainer = () => {
   const isFetchingTasks = taskListState.isLoading;
   const selectedTask = taskListState.projectData.tasks?.[taskID || ""];
   // We will render a loader based on the status,
-  // We make sure, the tasks have been fetched, project is a valid one.
+  // We make sure, the tasks have been fetched, project is a valid one
   if (isFetchingTasks || !projectState || projectState?.isLoading) {
  return <>Loading...</>;
   }

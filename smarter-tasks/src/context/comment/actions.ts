@@ -53,12 +53,13 @@ export const refreshComments = async (
 ) => {
   const token = localStorage.getItem("authToken") ?? "";
   try {
+    console.log("Refreshing comments for projectID:", projectID);
+  console.log("Task ID:", taskID);
     dispatch({ type: CommentAvailableAction.FETCH_COMMENTS_REQUEST });
     const response = await fetch(
       `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -67,11 +68,12 @@ export const refreshComments = async (
       throw new Error("Failed to fetch");
     }
     const Data = await response.json();
-    console.log(Data);
+    console.log("API Response:", Data);
     dispatch({
       type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS,
       payload: Data,
     });
+    return Data
   } catch (error) {
     console.error(`Operation failed: `, error);
     dispatch({

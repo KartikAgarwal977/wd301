@@ -9,8 +9,8 @@ import { updateTask } from "../../context/task/actions";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useMembersState } from "../../context/members/context";
 import {
-  useCommentDispatch,
-  useCommentState,
+  useCommentsDispatch,
+  useCommentsState,
 } from "../../context/comment/context";
 import { createComment, refreshComments } from "../../context/comment/actions";
 
@@ -43,8 +43,8 @@ const TaskDetails = () => {
   const [selectedPerson, setSelectedPerson] = useState(
     selectedTask.assignedUserName ?? ""
   );
-  const commentsDispatch = useCommentDispatch();
-  const commentsState = useCommentState();
+  const commentsDispatch = useCommentsDispatch();
+  const commentsState = useCommentsState();
   useEffect(() => {
     if (projectID && taskID) {
       refreshComments(commentsDispatch, projectID, taskID);

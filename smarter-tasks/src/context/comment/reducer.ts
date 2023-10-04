@@ -8,7 +8,7 @@ export const initialCommentState: CommentListState = {
     errorMessage:""
 }
 
-export const CommentReducer: Reducer<CommentListState, CommentActions> = (
+export const commentReducer: Reducer<CommentListState, CommentActions> = (
     state = initialCommentState,
     action
 ) => {
