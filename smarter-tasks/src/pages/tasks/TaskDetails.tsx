@@ -209,14 +209,14 @@ const TaskDetails = () => {
                           ))}
                         </Listbox.Options>
                       </Listbox>
-                      <div className="my-4 text-slate-600 p-4">
-                        <h1 className="text-sm font-bold text-align-center">
-                          comment
+                      <div className="my-2 text-slate-600 px-2">
+                        <h1 className="text-black text-sm font-bold text-align-center">
+                          Comment
                         </h1>
                       </div>
                       <div>
                         {commentsState.isLoading ? (
-                          <p>Loading...</p>
+                          <p>Loading dialog...</p>
                         ) : commentsState.isError ? (
                           <p className="text-red text-sm">
                             Error: {commentsState.errorMessage}
@@ -226,7 +226,7 @@ const TaskDetails = () => {
                             {commentsState.comments.map((com) => (
                               <div
                                 key={com.id}
-                              className="comment bg-gray-100">
+                              className="comment bg-gray-100 p-3 rounded-lg shadow-md">
                                 <div className="text-gray-600">
                                   <p>{com.description}</p>
                                   <p>{getDate(com.createdAt)}</p>

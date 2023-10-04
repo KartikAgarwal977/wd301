@@ -21,7 +21,7 @@ export const createComment = async (
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type" : "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(comment),
@@ -35,6 +35,7 @@ export const createComment = async (
       type: CommentAvailableAction.CREATE_COMMENT_SUCCESS,
       payload: data,
     });
+          console.log('done comment created')
     refreshComments(dispatch, projectID, taskID);
   } catch (error) {
     console.error(`Operation failed: `, error);
@@ -66,6 +67,7 @@ export const refreshComments = async (
       throw new Error("Failed to fetch");
     }
     const Data = await response.json();
+    console.log(Data);
     dispatch({
       type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS,
       payload: Data,
