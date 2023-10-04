@@ -15,7 +15,8 @@ export const fetchComments = async (
     dispatch({ type: CommentAvailableAction.FETCH_COMMENTS_REQUEST });
     const response = await fetch(
       `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
-      {
+
+      { method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },

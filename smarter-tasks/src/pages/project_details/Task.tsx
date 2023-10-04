@@ -1,12 +1,17 @@
 import React, { forwardRef } from "react";
-import { useParams } from "react-router-dom";
-import { TaskDetails } from "../../context/task/types";
-import { Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
-import './TaskCard.css'
+import { TaskDetails } from "../../context/task/types";
+import "./TaskCard.css";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTasksDispatch } from "../../context/task/context";
 import { deleteTask } from "../../context/task/actions";
-const Task = forwardRef<HTMLDivElement, React.PropsWithChildren<{ task: TaskDetails }>>((props, ref) => {
+
+
+const Task = forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<{ task: TaskDetails }>
+>((props, ref) => {
   const taskDispatch = useTasksDispatch();
   const { projectID } = useParams();
   const { task } = props;
@@ -17,19 +22,16 @@ const Task = forwardRef<HTMLDivElement, React.PropsWithChildren<{ task: TaskDeta
         to={`tasks/${task.id}`}
       >
         <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-          <div>
-            <h2 className="text-base font-bold my-1">{task.title}</h2>
-            <p className="text-sm text-slate-500">
-              {new Date(task.dueDate).toDateString()}
-            </p>
-            <p className="text-sm text-slate-500">
-              Description: {task.description}
-            </p>
-            <p className="text-sm text-slate-500">
-              Assignee: {task.assignedUserName ?? "-"}
-            </p>
-
-          </div>
+        <div>
+  <h2 className="text-base font-bold my-1">{task.title}</h2>
+  <p className="text-sm text-slate-500">
+    {new Date(task.dueDate).toDateString()}
+  </p>
+  <p className="text-sm text-slate-500">Description: {task.description}</p>
+  <p className="text-sm text-slate-500">
+    Assignee: {task.assignedUserName ?? "-"}
+  </p>
+</div>
           <button
             className="deleteTaskButton cursor-pointer h-4 w-4 rounded-full my-5 mr-5"
             onClick={(event) => {
@@ -59,23 +61,22 @@ const Task = forwardRef<HTMLDivElement, React.PropsWithChildren<{ task: TaskDeta
 });
 
 const Container = (
-  props: React.PropsWithChildren<{
-    task: TaskDetails;
-    index: number;
-  }>
-) => {
-  return (
-    <Draggable index={props.index} draggableId={`${props.task.id}`}>
-      {(provided) => (
-        <Task
-          task={props.task}
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        />
-      )}
-    </Draggable>
-  );
-};
-
+    props: React.PropsWithChildren<{
+      task: TaskDetails;
+      index: number;
+    }>
+  ) => {
+    return (
+      <Draggable index={props.index} draggableId={`${props.task.id}`}>
+        {(provided) => (
+          <Task
+            task={props.task}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          />
+        )}
+      </Draggable>
+    );
+  };
 export default Container;
