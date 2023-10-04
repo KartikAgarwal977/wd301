@@ -12,7 +12,7 @@ import {
   useCommentDispatch,
   useCommentState,
 } from "../../context/comment/context";
-import { createComment, refreshComments } from "../../context/comment/action";
+import { createComment, refreshComments } from "../../context/comment/actions";
 
 type TaskFormUpdatePayload = TaskDetailsPayload & {
   selectedPerson: string;
