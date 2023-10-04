@@ -48,23 +48,17 @@ const DragDropList = (props: { data: ProjectData }) => {
     }
     const startTaskIds = Array.from(start.taskIDs)
     const updatedItems = startTaskIds.splice(source.index, 1)
-    const updatedTask = props.data.tasks[updatedItems[0]];
-    updatedTask.state = finishKey;
-    updateTask(taskDispatch, projectID ?? "", updatedTask);
-    
     const newStart = {
       ...start,
       taskIDs: startTaskIds,
     }
 
     const finishTaskIDs = Array.from(finish.taskIDs)
-
     finishTaskIDs.splice(destination.index, 0, draggableId);
     const newFinish = {
       ...finish,
       taskIDs: finishTaskIDs,
     }
-
     const newState = {
       ...props.data,
       columns: {
@@ -74,6 +68,12 @@ const DragDropList = (props: { data: ProjectData }) => {
       }
     }
     reorderTasks(taskDispatch, newState)
+    const updatedTask = props.data.tasks[updatedItems[0]];
+    updatedTask.state = finishKey;
+    updateTask(taskDispatch, projectID ?? "", updatedTask);
+    
+
+
   }
       
   return (

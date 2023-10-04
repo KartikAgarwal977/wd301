@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { TaskDetails } from "../../context/task/types";
 import { Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
+import './TaskCard.css'
 import { useTasksDispatch } from "../../context/task/context";
 import { deleteTask } from "../../context/task/actions";
 const Task = forwardRef<HTMLDivElement, React.PropsWithChildren<{ task: TaskDetails }>>((props, ref) => {

@@ -240,21 +240,21 @@ const TaskDetails = () => {
                       <div>
                         <input
                           type="text"
-                          id="newcomment"
+                          id="commentBox"
                           placeholder="Add comment"
                           className="w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue"
                         />
                         <button
                           onClick={() => {
                             const newComment = document.getElementById(
-                              "newcomment"
+                              "commentBox"
                             ) as HTMLInputElement | null;
                             const newCommentdata = newComment?.value;
                             if (newCommentdata) {
                               OnSubmitCreateComment(newCommentdata);
                             }
                           }}
-                          type="submit"
+                          id="addCommentBtn"
                           className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 mr-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         >
                           Add comment
