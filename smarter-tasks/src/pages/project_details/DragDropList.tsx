@@ -4,10 +4,12 @@ import Column from "./Column";
 import { DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
 import { reorderTasks, updateTask } from "../../context/task/actions";
 import { useTasksDispatch } from "../../context/task/context";
+import { useParams } from "react-router-dom";
 const Container = (props: React.PropsWithChildren) => {
   return <div className="flex">{props.children}</div>;
 };
 const DragDropList = (props: { data: ProjectData }) => {
+  const { projectID } = useParams();
   const taskDispatch = useTasksDispatch()
   const onDragEnd: OnDragEndResponder = (result) => {
     const { destination, source, draggableId } = result;
@@ -43,13 +45,13 @@ const DragDropList = (props: { data: ProjectData }) => {
       }
       reorderTasks(taskDispatch, newState);
       const updatedTask = props.data.tasks[updatedItems[0]];
-      updateTask.state = finishKey;
+      updatedTask.state = finishKey;
       updateTask(taskDispatch, projectID ?? "", updatedTask);
       return;
     }
     const startTaskIds = Array.from(start.taskIDs)
     const updatedItems = startTaskIds.splice(source.index, 1)
-
+    
     const newStart = {
       ...start,
       taskIDs: startTaskIds,

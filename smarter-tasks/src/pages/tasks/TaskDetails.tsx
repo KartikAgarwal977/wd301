@@ -1,17 +1,24 @@
-import { Fragment, useState } from "react";
-import { TaskDetailsPayload } from "./types";
+import { Fragment, useEffect, useState } from "react";
+import { TaskDetailsPayload } from "../../context/task/types";
 import { useNavigate, useParams } from "react-router-dom";
-import { useProjectsState } from "../projects/context";
-import { useTasksDispatch, useTasksState } from "./context";
+import { useProjectsState } from "../../context/projects/context";
+import { useTasksDispatch, useTasksState } from "../../context/task/context";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
-import { updateTask } from "./actions";
+import { updateTask } from "../../context/task/actions";
 import { CheckIcon } from "@heroicons/react/24/outline";
-import { useMembersState } from "../members/context";
+import { useMembersState } from "../../context/members/context";
+import {
+  useCommentDispatch,
+  useCommentState,
+} from "../../context/comment/context";
+import { createComment, refreshComments } from "../../context/comment/action";
 
 type TaskFormUpdatePayload = TaskDetailsPayload & {
   selectedPerson: string;
-}
+  comment: string;
+};
+
 const formatDateForPicker = (isoDate: string) => {
   const dateObj = new Date(isoDate);
   const year = dateObj.getFullYear();
@@ -30,29 +37,42 @@ const TaskDetails = () => {
   const projectState = useProjectsState();
   const taskListState = useTasksState();
   const taskDispatch = useTasksDispatch();
-  const memberState = useMembersState()
+  const memberState = useMembersState();
 
   const selectedTask = taskListState.projectData.tasks[taskID ?? ""];
   const [selectedPerson, setSelectedPerson] = useState(
     selectedTask.assignedUserName ?? ""
-    )
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TaskFormUpdatePayload>({
+  );
+  const commentsDispatch = useCommentDispatch();
+  const commentsState = useCommentState();
+  useEffect(() => {
+    if (projectID && taskID) {
+      refreshComments(commentsDispatch, projectID, taskID);
+    }
+  }, [commentsDispatch, projectID, taskID]);
+  const getDate = (date: Date): string => {
+    return `${new Date(date).toLocaleDateString("en-In")} ${new Date(
+      date
+    ).toLocaleTimeString("en-In")}`;
+  };
+  const getUser = (currentuser: number) => {
+    const User = memberState?.users.filter(
+      (user) => user.id === currentuser
+    )[0];
+    return User?.name;
+  };
+  const { register, handleSubmit } = useForm<TaskFormUpdatePayload>({
     defaultValues: {
       title: selectedTask.title,
       description: selectedTask.description,
       selectedPerson: selectedTask.assignedUserName,
       dueDate: formatDateForPicker(selectedTask.dueDate),
     },
-  })
+  });
 
   const selectedProject = projectState?.projects.filter(
     (project) => `${project.id}` === projectID
   )[0];
-
 
   if (!selectedProject) {
     return <>No such Project!</>;
@@ -63,16 +83,25 @@ const TaskDetails = () => {
     navigate("../../");
   }
 
+  const OnSubmitCreateComment = async (comment: string) => {
+    const Comment = {
+      description: comment,
+    };
+    if (projectID && taskID) {
+      createComment(commentsDispatch, projectID, taskID, Comment);
+    }
+  };
+
   const onSubmit: SubmitHandler<TaskFormUpdatePayload> = async (data) => {
-    const assignee = memberState?.members?.filter(
+    const assignee = memberState?.users?.filter(
       (member) => member.name === selectedPerson
     )?.[0];
     updateTask(taskDispatch, projectID ?? "", {
-          ...selectedTask,
-        ...data,
-          assignee: assignee?.id,
-    })
-      closeModal();
+      ...selectedTask,
+      ...data,
+      assignee: assignee?.id,
+    });
+    closeModal();
   };
 
   return (
@@ -134,7 +163,9 @@ const TaskDetails = () => {
                         {...register("dueDate", { required: true })}
                         className="w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue"
                       />
-                      <h3><strong>Assignee</strong></h3>
+                      <h3>
+                        <strong>Assignee</strong>
+                      </h3>
                       <Listbox
                         value={selectedPerson}
                         onChange={setSelectedPerson}
@@ -143,15 +174,16 @@ const TaskDetails = () => {
                           {selectedPerson}
                         </Listbox.Button>
                         <Listbox.Options className="absolute mt-1 max-h-60 rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                          {memberState?.members.map((person) => (
+                          {memberState?.users.map((person) => (
                             <Listbox.Option
                               key={person.id}
-                              className={({ active }) => 
+                              className={({ active }) =>
                                 `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                active
-                                  ? "bg-blue-100 text-blue-900"
-                                  : "text-gray-900"
-                                }`}
+                                  active
+                                    ? "bg-blue-100 text-blue-900"
+                                    : "text-gray-900"
+                                }`
+                              }
                               value={person.name}
                             >
                               {({ selected }) => (
@@ -159,7 +191,7 @@ const TaskDetails = () => {
                                   <span
                                     className={`block truncate ${
                                       selected ? "font-medium" : "font-normal"
-                                      }`}
+                                    }`}
                                   >
                                     {person.name}
                                   </span>
@@ -170,18 +202,65 @@ const TaskDetails = () => {
                                         aria-hidden="true"
                                       />
                                     </span>
-                                  ): null}
+                                  ) : null}
                                 </>
                               )}
                             </Listbox.Option>
                           ))}
                         </Listbox.Options>
-
                       </Listbox>
-                      <button
-                        type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 mr-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      >
+                      <div className="my-4 text-slate-600 p-4">
+                        <h1 className="text-sm font-bold text-align-center">
+                          comment
+                        </h1>
+                      </div>
+                      <div>
+                        {commentsState.isLoading ? (
+                          <p>Loading...</p>
+                        ) : commentsState.isError ? (
+                          <p className="text-red text-sm">
+                            Error: {commentsState.errorMessage}
+                          </p>
+                        ) : (
+                          <>
+                            {commentsState.comments.map((com) => (
+                              <div
+                                key={com.id}
+                              className="comment bg-gray-100">
+                                <div className="text-gray-600">
+                                  <p>{com.description}</p>
+                                  <p>{getDate(com.createdAt)}</p>
+                                  <p>{getUser(com.member.id)}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </>
+                        )}
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          id="newcomment"
+                          placeholder="Add comment"
+                          className="w-full border rounded-md py-2 px-3 my-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline-blue"
+                        />
+                        <button
+                          onClick={() => {
+                            const newComment = document.getElementById(
+                              "newcomment"
+                            ) as HTMLInputElement | null;
+                            const newCommentdata = newComment?.value;
+                            if (newCommentdata) {
+                              OnSubmitCreateComment(newCommentdata);
+                            }
+                          }}
+                          type="submit"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 mr-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        >
+                          Add comment
+                        </button>
+                      </div>
+                      <button className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 mr-2 text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
                         Update
                       </button>
                       <button
