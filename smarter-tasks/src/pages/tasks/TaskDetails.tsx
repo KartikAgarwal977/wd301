@@ -11,20 +11,18 @@ import { TaskDetailsPayload } from "../../context/task/types";
 import { useMembersState } from "../../context/members/context";
 
 import {
-  fetchComments, // Add the fetchComments function
-  createComment, // Add the createComment function
-} from "../../context/comment/actions"; // Import comment-related actions
+  fetchComments,
+  createComment, 
+} from "../../context/comment/actions"; 
 import {
   useCommentState,
   useCommentDispatch,
-} from "../../context/comment/context"; // Import comment-related context
+} from "../../context/comment/context";
 
 type TaskFormUpdatePayload = TaskDetailsPayload & {
   selectedPerson: string;
-  commentText: string; // Added commentText to store comment input
+  commentText: string; 
 };
-
-// Helper function to format the date to YYYY-MM-DD format
 const formatDateForPicker = (isoDate: string) => {
   const dateObj = new Date(isoDate);
   const year = dateObj.getFullYear();
@@ -39,6 +37,7 @@ const TaskDetails = () => {
   let { projectID, taskID } = useParams();
   let navigate = useNavigate();
 
+  
   // Extract project and task details.
   const projectState = useProjectsState();
   const taskListState = useTasksState();
@@ -55,7 +54,7 @@ const TaskDetails = () => {
   useEffect(() => {
     if (projectID && taskID) fetchComments(commentsDispatch, projectID, taskID);
   }, [commentsDispatch, projectID, taskID]);
-
+  console.log(commentsState.comments,"is the data")
   const getDate = (date: Date): string => {
     const newDate = new Date(date);
     return `${newDate.toLocaleDateString("en-In")} ${newDate.toLocaleTimeString(
@@ -75,7 +74,6 @@ const TaskDetails = () => {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
   } = useForm<TaskFormUpdatePayload>({
     defaultValues: {
       title: selectedTask.title,
@@ -106,7 +104,6 @@ const TaskDetails = () => {
     closeModal();
   };
 
-  // Function to create a new comment
   const handleCreateComment = (commentText: string) => {
         const comment = {
           description: commentText,
@@ -241,7 +238,6 @@ const TaskDetails = () => {
                         Comments
                       </h3>
                       <div>
-                        {/* Render comments from commentsState as needed */}
                         {commentsState.isLoading ? (
                           <p>Loading comments...</p>
                         ) : commentsState.isError ? (

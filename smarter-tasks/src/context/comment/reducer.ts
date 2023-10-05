@@ -5,7 +5,6 @@ import {
   CommentListState,
 } from "./types";
 
-// Define the initial state for comments
 export const initialCommentState: CommentListState = {
   comments: [],
   isLoading: false,
@@ -40,9 +39,7 @@ export const commentReducer: Reducer<CommentListState, CommentActions> = (
         isLoading: false,
         isError: true,
         errorMessage: action.payload,
-      };
-
-    // Add more comment-related actions as needed
+      }
 
     default:
       return state;

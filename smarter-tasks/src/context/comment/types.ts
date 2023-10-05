@@ -41,7 +41,7 @@ export interface Comment {
   
   export type CommentActions =
     | { type: CommentAvailableAction.FETCH_COMMENTS_REQUEST }
-    | { type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS; payload: Comment[] }
+    | { type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS; payload:Comment[]}
     | { type: CommentAvailableAction.FETCH_COMMENTS_FAILURE; payload: string }
     | { type: CommentAvailableAction.CREATE_COMMENT_REQUEST }
     | { type: CommentAvailableAction.CREATE_COMMENT_SUCCESS ,payload: Comment}

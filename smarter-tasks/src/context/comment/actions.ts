@@ -3,8 +3,6 @@ import { API_ENDPOINT } from "../../config/constants";
 import { CommentAvailableAction, CommentActions } from "./types";
 import { CommentPayload } from "./types";
 
-// Action to fetch comments for a specific task
-// Action to fetch comments for a specific task and sort them in reverse chronological order
 export const fetchComments = async (
   dispatch: Dispatch<CommentActions>,
   projectID: string,
@@ -15,8 +13,8 @@ export const fetchComments = async (
     dispatch({ type: CommentAvailableAction.FETCH_COMMENTS_REQUEST });
     const response = await fetch(
       `${API_ENDPOINT}/projects/${projectID}/tasks/${taskID}/comments`,
-
-      { method: "GET",
+      {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -29,10 +27,12 @@ export const fetchComments = async (
 
     const data = await response.json();
     console.log(data);
+    console.log("Dispatching FETCH_COMMENTS_SUCCESS with data:", data);
     dispatch({
       type: CommentAvailableAction.FETCH_COMMENTS_SUCCESS,
       payload: data,
     });
+    console.log("dispatch next")
   } catch (error) {
     console.error("Operation failed:", error);
     dispatch({
@@ -42,7 +42,6 @@ export const fetchComments = async (
   }
 };
 
-// Action to create a new comment for a specific task
 export const createComment = async (
   dispatch: Dispatch<CommentActions>,
   projectID: string,
@@ -68,8 +67,11 @@ export const createComment = async (
       throw new Error("Failed to create comment");
     }
     const data2 = await response.json();
-    
-    dispatch({ type: CommentAvailableAction.CREATE_COMMENT_SUCCESS, payload: data2 });
+
+    dispatch({
+      type: CommentAvailableAction.CREATE_COMMENT_SUCCESS,
+      payload: data2,
+    });
     // You may choose to refresh comments after creating a new one
     console.log("comment created");
     fetchComments(dispatch, projectID, taskID);

@@ -1,15 +1,12 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { commentReducer, initialCommentState } from "./reducer";
 import { CommentListState, CommentActions } from "./types";
-
-// Create a context for the comment state and dispatch
 const CommentStateContext =
   createContext<CommentListState>(initialCommentState);
 const CommentDispatchContext = createContext<React.Dispatch<CommentActions>>(
   () => {}
 );
 
-// Create a provider component to wrap your app with the comment context
 export const CommentProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
