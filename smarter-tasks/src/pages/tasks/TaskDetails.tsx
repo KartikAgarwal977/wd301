@@ -244,7 +244,7 @@ const TaskDetails = () => {
                           <p>Error: {commentsState.errorMessage}</p>
                         ) : (
                           <div className="mt-2 space-y-4">
-                            {commentsState.comments.reverse().map((comment) => (
+                            {commentsState.comments.map((comment) => (
                               <div
                                 key={comment.id}
                                 className="comment bg-gray-100 p-3 rounded-lg shadow-md"
