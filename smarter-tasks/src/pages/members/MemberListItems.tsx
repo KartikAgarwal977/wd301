@@ -8,6 +8,9 @@ export default function MemberListItems() {
     deleteUser(dispatchMember, id);
   };
   const { users, isLoading, isError, errorMessage } = state;
+  // if (users.length === 0) {
+  //   throw Error("Error!!")
+  // }
   if (users.length === 0 && isLoading) {
     return <span>Loading...</span>;
   }
